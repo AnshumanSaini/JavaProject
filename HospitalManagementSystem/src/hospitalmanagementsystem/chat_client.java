@@ -16,7 +16,7 @@ import java.net.Socket;
  *
  * @author mukul
  */
-public class chat_client extends javax.swing.JFrame {
+public class chat_client extends javax.swing.JFrame implements Runnable {
     static Socket s;
     static DataInputStream dis;
     static DataOutputStream dout;
@@ -24,7 +24,9 @@ public class chat_client extends javax.swing.JFrame {
     /**
      * Creates new form chat_client
      */
-    public chat_client() {
+    public chat_client() 
+    {
+        chat_client.main(null);
         initComponents();
     }
 
@@ -113,51 +115,18 @@ public class chat_client extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(chat_client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(chat_client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(chat_client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(chat_client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new chat_client().setVisible(true);
-            }
-        });
+    public static void main(String args[]) 
+    {
+        new chat_client().setVisible(true);
         
-         try {
-            String msgin = "";
-            
-            s = new Socket("127.0.0.1",1201); // ip address is of localhost because server is running on the same mschine
-            dis = new DataInputStream(s.getInputStream());
-            dout = new DataOutputStream(s.getOutputStream());
-
-            while (!msgin.equals("exit")) {
-                msgin = dis.readUTF();
-                msg_area.setText(msg_area.getText() + "\n Doctor : " + msgin);
-            }
-
-        } catch (Exception e) {
-            //handle the exception here
+         try 
+         {
+             Thread clientThread=new Thread(new chat_client());
+             clientThread.start();
+         }
+ 
+        catch (Exception e) 
+        {
         }
 
         
@@ -170,4 +139,26 @@ public class chat_client extends javax.swing.JFrame {
     private javax.swing.JButton msg_send;
     private javax.swing.JTextField msg_text;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() 
+    {
+        try
+        {
+            String msgin = "";
+            
+            s = new Socket("127.0.0.1",1201); // ip address is of localhost because server is running on the same mschine
+            dis = new DataInputStream(s.getInputStream());
+            dout = new DataOutputStream(s.getOutputStream());
+
+            while (!msgin.equals("exit")) {
+                msgin = dis.readUTF();
+                msg_area.setText(msg_area.getText() + "\n Doctor : " + msgin);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

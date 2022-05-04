@@ -4,16 +4,74 @@
  * and open the template in the editor.
  */
 package hospitalmanagementsystem;
+import hospitalmanagementsystem.*;
+import java.sql.*;
+import javax.swing.*;
 
 /**
  *
  * @author saini
  */
-public class Bill extends javax.swing.JFrame {
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-    /**
-     * Creates new form Bill
-     */
+/**
+ *
+ * @author Raj
+ */
+//class Connect 
+// {
+//     Connection con=null;
+//   
+//        public static Connection ConnectDB()
+//        {
+//             try{
+//           
+//          Class.forName("com.mysql.jdbc.Driver");
+//         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hms_db","root","root");
+//          return con;
+//            
+//        }
+//             catch(ClassNotFoundException | SQLException e){
+//            JOptionPane.showMessageDialog(null, e);
+//            return null;
+//    }      
+//}
+//}
+public class Bill extends javax.swing.JFrame
+{
+
+    Connection con=null;
+    ResultSet rs=null;
+    PreparedStatement pst=null;
+    private void Reset()
+{
+    txtDoctorID.setText("");
+    txtDoctorName.setText("");
+    PatientID.setText("");
+    txtPatientName.setText("");
+    txtBloodGroup.setText("");
+    txtGender.setText("");
+    txtDisease.setText("");
+    txtAdmitDate.setText("");
+    txtRoomNo.setText("");
+    txtServiceCharges.setText("");
+    txtRoomCharges.setText("");
+    txtPaymentModeDetails.setText("");
+    txtTotalCharges.setText("");
+    txtTotalPaid.setText("");
+    txtDueCharges.setText("");
+    txtBillingDate.setText("");
+    cmbPaymentMode.setSelectedIndex(-1);
+    txtDischargeDate.setText("");
+    txtNoOfDays.setText("");
+    txtTotalRoomCharges.setText("");
+    btnSave.setEnabled(true);
+    btnUpdate.setEnabled(false);
+    btnDelete.setEnabled(false);
+}
     public Bill() {
         initComponents();
     }
@@ -426,14 +484,14 @@ public class Bill extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         try{
-            con=Connect.ConnectDB();
+             con=Connect.ConnectDB();
             String sql= "update Bill_ward set DischargeID="+ txtDischargeID.getText() + ",BillingDate='"+ txtBillingDate.getText() + "',BedCharges="+ txtBedCharges.getText() + ",ServiceCharges="+ txtServiceCharges.getText() + ",PaymentMode='" + cmbPaymentMode.getSelectedItem()+ "',PaymentModeDetails='" + txtPaymentModeDetails.getText() + "',ChargesPaid="+ txtTotalPaid.getText() + ",DueCharges="+ txtDueCharges.getText() + ",TotalCharges="+ txtTotalCharges.getText() + ",NoOfDays="+ txtNoOfDays.getText() +",TotalBedCharges=" + txtTotalBedCharges.getText() + " where BillNo= " + txtBillNo.getText() +"";  pst=con.prepareStatement(sql);
             pst.execute();
             JOptionPane.showMessageDialog(this,"Successfully Updated","Record",JOptionPane.INFORMATION_MESSAGE);
             btnUpdate.setEnabled(false);
 
-        }catch(HeadlessException | SQLException ex){
-            JOptionPane.showMessageDialog(this,ex);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this,e.printStackTrace());
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -457,7 +515,7 @@ public class Bill extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try{
-            con=Connect.ConnectDB();
+             Connection con=Connect.ConnectDB();
             if (PatientID.getText().equals("")) {
                 JOptionPane.showMessageDialog( this, "Please retrieve Patient ID","Error", JOptionPane.ERROR_MESSAGE);
                 return;

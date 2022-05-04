@@ -4,16 +4,37 @@
  * and open the template in the editor.
  */
 package hospitalmanagementsystem;
+import hospitalmanagementsystem.*;
+import java.sql.*;
+import javax.swing.*;
 
 /**
  *
  * @author saini
  */
-public class CreateID extends javax.swing.JFrame {
+public class CreateID extends javax.swing.JFrame 
+{
 
     /**
      * Creates new form CreateID
      */
+        Connection con=null;
+        ResultSet rs=null;
+        PreparedStatement pst=null;
+private void Reset()
+{
+    txtPID.setText("");
+    txtPDisease.setText("");
+    txtPAD.setText("");
+    txtPName.setText("");
+    txtPGender.setText("");
+    txtPDisease.setText("");
+    txtPBG.setText("");
+    txtPAD.setText("");
+    btnSave.setEnabled(true);
+    btnUpdate.setEnabled(false);
+    btnDelete.setEnabled(false);
+}
     public CreateID() {
         initComponents();
     }
@@ -37,18 +58,18 @@ public class CreateID extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        txtAdmitDate = new javax.swing.JFormattedTextField();
+        txtPAD = new javax.swing.JFormattedTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        txtDisease = new javax.swing.JTextField();
+        txtPDisease = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtRemarks = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtPID = new javax.swing.JTextField();
+        txtPName = new javax.swing.JTextField();
+        txtPGender = new javax.swing.JTextField();
+        txtPBG = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,7 +142,7 @@ public class CreateID extends javax.swing.JFrame {
 
         jLabel10.setText("Remarks");
 
-        txtAdmitDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtPAD.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
 
         jLabel11.setText("Gender");
 
@@ -135,9 +156,9 @@ public class CreateID extends javax.swing.JFrame {
         txtRemarks.setRows(5);
         jScrollPane1.setViewportView(txtRemarks);
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        txtPBG.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                txtPBGActionPerformed(evt);
             }
         });
 
@@ -160,14 +181,14 @@ public class CreateID extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(txtAdmitDate, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPAD, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel22))
-                        .addComponent(txtDisease))
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtPDisease))
+                    .addComponent(txtPID, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPName, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPGender, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPBG, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -177,27 +198,27 @@ public class CreateID extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1))
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
+                    .addComponent(txtPName, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
+                    .addComponent(txtPGender, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPBG, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDisease, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel12)
+                    .addComponent(txtPDisease, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(txtAdmitDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPAD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,77 +258,77 @@ public class CreateID extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try{
             con=Connect.ConnectDB();
-            if (PatientID.getText().equals("")) {
+            if (txtPID.getText().equals("")) {
                 JOptionPane.showMessageDialog( this, "Please retrieve Patient ID","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (txtPatientName.getText().equals("")) {
+            if (txtPName.getText().equals("")) {
                 JOptionPane.showMessageDialog( this, "Please retrieve Patient Name","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (txtGender.getText().equals("")) {
+            if (txtPGender.getText().equals("")) {
                 JOptionPane.showMessageDialog( this, "Please retrieve Gender","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            if (txtBloodGroup.getText().equals("")) {
+            if (txtPBG.getText().equals("")) {
                 JOptionPane.showMessageDialog( this, "Please retrieve blood group","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (txtDisease.getText().equals("")) {
+            if (txtPDisease.getText().equals("")) {
                 JOptionPane.showMessageDialog( this, "Please enter disease","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (txtAdmitDate.getText().equals("")) {
+            if (txtPAD.getText().equals("")) {
                 JOptionPane.showMessageDialog( this, "Please enter admit date","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (cmbRoomNo.getSelectedItem().equals("")) {
-                JOptionPane.showMessageDialog( this, "Please select room no.","Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+//            if (cmbRoomNo.getSelectedItem().equals("")) {
+//                JOptionPane.showMessageDialog( this, "Please select room no.","Error", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
 
-            if (txtDoctorID.getText().equals("")) {
-                JOptionPane.showMessageDialog( this, "Please retrieve doctor id","Error", JOptionPane.ERROR_MESSAGE);
-                return;
-
-            }
-            if (txtDoctorName.getText().equals("")) {
-                JOptionPane.showMessageDialog( this, "Please enter retrieve doctor name","Error", JOptionPane.ERROR_MESSAGE);
-                return;
-
-            }
-            Statement stmt1;
-            stmt1= con.createStatement();
-            String sql2="Select RoomNo from Room where RoomNo= '" + cmbRoomNo.getSelectedItem()+ "' and RoomStatus='Booked'";
-            rs=stmt1.executeQuery(sql2);
-            if(rs.next()){
-                JOptionPane.showMessageDialog( this, "Room is already booked","Error", JOptionPane.ERROR_MESSAGE);
-                cmbRoomNo.setSelectedItem("");
-                cmbRoomNo.requestDefaultFocus();
-                return;
-            }
+//            if (txtDoctorID.getText().equals("")) {
+//                JOptionPane.showMessageDialog( this, "Please retrieve doctor id","Error", JOptionPane.ERROR_MESSAGE);
+//                return;
+//
+//            }
+//            if (txtDoctorName.getText().equals("")) 
+//            {
+//                JOptionPane.showMessageDialog( this, "Please enter retrieve doctor name","Error", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+//            Statement stmt1;
+//            stmt1= con.createStatement();
+//            String sql2="Select RoomNo from Room where RoomNo= '" + cmbRoomNo.getSelectedItem()+ "' and RoomStatus='Booked'";
+//            rs=stmt1.executeQuery(sql2);
+//            if(rs.next()){
+//                JOptionPane.showMessageDialog( this, "Room is already booked","Error", JOptionPane.ERROR_MESSAGE);
+////                cmbRoomNo.setSelectedItem("");
+////                cmbRoomNo.requestDefaultFocus();
+//                return;
+//            }
             Statement stmt;
             stmt= con.createStatement();
-            String sql1="Select PatientID,AdmitDate from AdmitPatient_Room where PatientID= '" + PatientID.getText() + "' and AdmitDate='" + txtAdmitDate + "'";
+            String sql1="Select patient_id,admit_date from hms where patient_id= '" + txtPID.getText() + "' and admit_date='" + txtPAD + "'";
             rs=stmt.executeQuery(sql1);
             if(rs.next()){
                 JOptionPane.showMessageDialog( this, "Record already exists","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String sql= "insert into AdmitPatient_Room(PatientID,Disease,AdmitDate,RoomNo,DoctorID,AP_Remarks)values('"+ PatientID.getText() + "','"+ txtDisease.getText() + "','"+ txtAdmitDate.getText() + "','"+ cmbRoomNo.getSelectedItem()+ "','" + txtDoctorID.getText() + "','"+ txtRemarks.getText() + "')";
+//            String sql= "insert into AdmitPatient_Room(txtPID,Disease,AdmitDate,RoomNo,DoctorID,AP_Remarks)values('"+ txtPID.getText() + "','"+ txtPDisease.getText() + "','"+ txtPAD.getText() + "','"+ "','" + txtDoctorID.getText() + "','"+ txtRemarks.getText() + "')";
 
-            pst=con.prepareStatement(sql);
-            pst.execute();
-            String sql3= "update room set RoomStatus='Booked' where RoomNo='" + cmbRoomNo.getSelectedItem() + "'";
-            pst=con.prepareStatement(sql3);
-            pst.execute();
-            JOptionPane.showMessageDialog(this,"Successfully admitted","Patient",JOptionPane.INFORMATION_MESSAGE);
-            btnSave.setEnabled(false);
+//            pst=con.prepareStatement(sql);
+//            pst.execute();
+//            String sql3= "update room set RoomStatus='Booked' where RoomNo='" + cmbRoomNo.getSelectedItem() + "'";
+//            pst=con.prepareStatement(sql3);
+//            pst.execute();
+//            JOptionPane.showMessageDialog(this,"Successfully admitted","Patient",JOptionPane.INFORMATION_MESSAGE);
+//            btnSave.setEnabled(false);
 
-        }catch(HeadlessException | SQLException ex){
-            JOptionPane.showMessageDialog(this,ex);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this,e);
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -317,15 +338,15 @@ public class CreateID extends javax.swing.JFrame {
             if (P==0)
             {
                 con=Connect.ConnectDB();
-                String sql= "delete from AdmitPatient_Room where AdmitID = " + txtAdmitID.getText() + "";
+                String sql= "delete from hms where patient_id = " + txtPID.getText() + "";
                 pst=con.prepareStatement(sql);
                 pst.execute();
                 JOptionPane.showMessageDialog(this,"Successfully deleted","Record",JOptionPane.INFORMATION_MESSAGE);
 
                 Reset();
             }
-        }catch(HeadlessException | SQLException ex){
-            JOptionPane.showMessageDialog(this,ex);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this,e);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -336,48 +357,48 @@ public class CreateID extends javax.swing.JFrame {
 
             Statement stmt1;
             stmt1= con.createStatement();
-            String s= cmbRoomNo.getSelectedItem().toString();
-            String t= cmbRoomNo1.getSelectedItem().toString();
-            if (!t.equals(s))
-            {
-                String sql2="Select RoomNo from Room where RoomNo= '" + cmbRoomNo.getSelectedItem()+ "' and RoomStatus='Booked'";
-                rs=stmt1.executeQuery(sql2);
-                if(rs.next()){
-                    JOptionPane.showMessageDialog( this, "Room is already booked","Error", JOptionPane.ERROR_MESSAGE);
-                    cmbRoomNo.setSelectedItem("");
-                    cmbRoomNo.requestDefaultFocus();
-                    return;
-                }
-            }
+//            String s= cmbRoomNo.getSelectedItem().toString();
+//            String t= cmbRoomNo1.getSelectedItem().toString();
+//            if (!t.equals(s))
+//            {
+//                String sql2="Select RoomNo from Room where RoomNo= '" + cmbRoomNo.getSelectedItem()+ "' and RoomStatus='Booked'";
+//                rs=stmt1.executeQuery(sql2);
+//                if(rs.next()){
+//                    JOptionPane.showMessageDialog( this, "Room is already booked","Error", JOptionPane.ERROR_MESSAGE);
+//                    cmbRoomNo.setSelectedItem("");
+//                    cmbRoomNo.requestDefaultFocus();
+//                    return;
+//                }
+//            }
 
-            String sql= " update AdmitPatient_Room set  PatientID='"+ PatientID.getText() + "',Disease='"+ txtDisease.getText() + "',AdmitDate='"+ txtAdmitDate.getText() + "',RoomNo='"+ cmbRoomNo.getSelectedItem()+ "',DoctorID='" + txtDoctorID.getText() + "',AP_Remarks='"+ txtRemarks.getText() + "' where AdmitID= " + txtAdmitID.getText() + "";
+            String sql= " update hms set  patient_id='"+ txtPID.getText() + "',disease='"+ txtPDisease.getText() + "',admit_date='"+ txtPAD.getText() +   "' where patient_id= " + txtPID.getText() + "";
             pst=con.prepareStatement(sql);
             pst.execute();
 
-            if (!t.equals(s))
-            {
-                String sql3= "update room set RoomStatus='Booked' where RoomNo='" + cmbRoomNo.getSelectedItem() + "'";
-                pst=con.prepareStatement(sql3);
-                pst.execute();
-            }
-
-            if (!t.equals(s))
-            {
-                String sql4= "update room set RoomStatus='Vacant' where RoomNo='" + cmbRoomNo1.getSelectedItem() + "'";
-                pst=con.prepareStatement(sql4);
-                pst.execute();
-            }
+//            if (!t.equals(s))
+//            {
+//                String sql3= "update room set RoomStatus='Booked' where RoomNo='" + cmbRoomNo.getSelectedItem() + "'";
+//                pst=con.prepareStatement(sql3);
+//                pst.execute();
+//            }
+//
+//            if (!t.equals(s))
+//            {
+//                String sql4= "update room set RoomStatus='Vacant' where RoomNo='" + cmbRoomNo1.getSelectedItem() + "'";
+//                pst=con.prepareStatement(sql4);
+//                pst.execute();
+//            }
             JOptionPane.showMessageDialog(this,"Successfully updated","Patient Record",JOptionPane.INFORMATION_MESSAGE);
             btnUpdate.setEnabled(false);
 
-        }catch(HeadlessException | SQLException ex){
+        }catch(Exception ex){
             JOptionPane.showMessageDialog(this,ex);
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void txtPBGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPBGActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_txtPBGActionPerformed
 
     /**
      * @param args the command line arguments
@@ -430,12 +451,12 @@ public class CreateID extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    public javax.swing.JFormattedTextField txtAdmitDate;
-    public javax.swing.JTextField txtDisease;
+    public javax.swing.JFormattedTextField txtPAD;
+    private javax.swing.JTextField txtPBG;
+    public javax.swing.JTextField txtPDisease;
+    private javax.swing.JTextField txtPGender;
+    private javax.swing.JTextField txtPID;
+    private javax.swing.JTextField txtPName;
     public javax.swing.JTextArea txtRemarks;
     // End of variables declaration//GEN-END:variables
 }

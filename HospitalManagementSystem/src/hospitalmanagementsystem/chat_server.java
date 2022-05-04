@@ -24,7 +24,9 @@ public class chat_server extends javax.swing.JFrame {
     /**
      * Creates new form chat_server
      */
-    public chat_server() {
+    public chat_server() 
+    {
+        chat_server.main(null);
         initComponents();
     }
 
@@ -138,8 +140,10 @@ public class chat_server extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+        java.awt.EventQueue.invokeLater(new Runnable() 
+        {
+            public void run() 
+            {
                 new chat_server().setVisible(true);
             }
         });
