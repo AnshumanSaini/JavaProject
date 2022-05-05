@@ -5,7 +5,8 @@ public class Test {
 	public static void main(String[] args) 
 	{
 		Connection connection = null;
-		try {
+		try 
+                {
 			// below two lines are used for connectivity.
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test","root", "root");

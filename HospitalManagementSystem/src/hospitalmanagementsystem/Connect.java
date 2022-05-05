@@ -1,7 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package hospitalmanagementsystem;
+
+
 
 /**
  *
@@ -9,14 +8,15 @@
  */
 import java.sql.*;
 import javax.swing.*;
-public class Connect {
+public class Connect 
+{
      Connection con=null;
    
         public static Connection ConnectDB(){
              try{
            
-          Class.forName("com.mysql.jdbc.Driver");
-         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hms_db","root","golu");
+          Class.forName("com.mysql.cj.jdbc.Driver");
+         Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/clinicmanagement","root","root");
           return con;
             
         }catch(ClassNotFoundException | SQLException e){

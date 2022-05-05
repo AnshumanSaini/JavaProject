@@ -34,6 +34,8 @@ private void Reset()
     btnSave.setEnabled(true);
     btnUpdate.setEnabled(false);
     btnDelete.setEnabled(false);
+    txtPP.setText("");
+    txtRemarks.setText("");
 }
     public CreateID() {
         initComponents();
@@ -70,6 +72,8 @@ private void Reset()
         txtPName = new javax.swing.JTextField();
         txtPGender = new javax.swing.JTextField();
         txtPBG = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtPP = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -162,6 +166,8 @@ private void Reset()
             }
         });
 
+        jLabel3.setText("New Password");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -175,8 +181,9 @@ private void Reset()
                     .addComponent(jLabel11)
                     .addComponent(jLabel13)
                     .addComponent(jLabel12)
-                    .addComponent(jLabel10))
-                .addGap(63, 63, 63)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel3))
+                .addGap(58, 58, 58)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -187,9 +194,11 @@ private void Reset()
                         .addComponent(txtPDisease))
                     .addComponent(txtPID, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPName, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPGender, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPBG, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtPBG, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtPP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                        .addComponent(txtPGender, javax.swing.GroupLayout.Alignment.LEADING)))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,12 +211,19 @@ private void Reset()
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(txtPName, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(txtPName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addComponent(txtPGender, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPP, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPGender, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addComponent(txtPBG, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -234,18 +250,21 @@ private void Reset()
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -258,7 +277,8 @@ private void Reset()
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try{
             con=Connect.ConnectDB();
-            if (txtPID.getText().equals("")) {
+            if (txtPID.getText().equals("")) 
+            {
                 JOptionPane.showMessageDialog( this, "Please retrieve Patient ID","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -283,62 +303,46 @@ private void Reset()
                 JOptionPane.showMessageDialog( this, "Please enter admit date","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-//            if (cmbRoomNo.getSelectedItem().equals("")) {
-//                JOptionPane.showMessageDialog( this, "Please select room no.","Error", JOptionPane.ERROR_MESSAGE);
-//                return;
-//            }
+            if (txtPP.getPassword().equals("")) {
+                JOptionPane.showMessageDialog( this, "Please enter Password","Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-//            if (txtDoctorID.getText().equals("")) {
-//                JOptionPane.showMessageDialog( this, "Please retrieve doctor id","Error", JOptionPane.ERROR_MESSAGE);
-//                return;
-//
-//            }
-//            if (txtDoctorName.getText().equals("")) 
-//            {
-//                JOptionPane.showMessageDialog( this, "Please enter retrieve doctor name","Error", JOptionPane.ERROR_MESSAGE);
-//                return;
-//            }
-//            Statement stmt1;
-//            stmt1= con.createStatement();
-//            String sql2="Select RoomNo from Room where RoomNo= '" + cmbRoomNo.getSelectedItem()+ "' and RoomStatus='Booked'";
-//            rs=stmt1.executeQuery(sql2);
-//            if(rs.next()){
-//                JOptionPane.showMessageDialog( this, "Room is already booked","Error", JOptionPane.ERROR_MESSAGE);
-////                cmbRoomNo.setSelectedItem("");
-////                cmbRoomNo.requestDefaultFocus();
-//                return;
-//            }
             Statement stmt;
             stmt= con.createStatement();
-            String sql1="Select patient_id,admit_date from hms where patient_id= '" + txtPID.getText() + "' and admit_date='" + txtPAD + "'";
+            String sql1="Select patient_id,admit_date from patient where patient_id= '" + txtPID.getText() + "' and admit_date='" + txtPAD.getText() + "'";
             rs=stmt.executeQuery(sql1);
             if(rs.next()){
                 JOptionPane.showMessageDialog( this, "Record already exists","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            String pass=new String(txtPP.getPassword());
+            
+            String sql= "insert into patient(patient_id,patient_name,gender,bloodGroup,disease,admit_date,password)values('"+ txtPID.getText() +"','"+ txtPName.getText()+ "','"+txtPGender.getText()+"','" +txtPBG.getText()+ "','" + txtPDisease.getText() + "','"+ txtPAD.getText() +"','"+pass +"')";
 
-//            String sql= "insert into AdmitPatient_Room(txtPID,Disease,AdmitDate,RoomNo,DoctorID,AP_Remarks)values('"+ txtPID.getText() + "','"+ txtPDisease.getText() + "','"+ txtPAD.getText() + "','"+ "','" + txtDoctorID.getText() + "','"+ txtRemarks.getText() + "')";
-
-//            pst=con.prepareStatement(sql);
-//            pst.execute();
+            pst=con.prepareStatement(sql);
+            pst.execute();
 //            String sql3= "update room set RoomStatus='Booked' where RoomNo='" + cmbRoomNo.getSelectedItem() + "'";
 //            pst=con.prepareStatement(sql3);
 //            pst.execute();
-//            JOptionPane.showMessageDialog(this,"Successfully admitted","Patient",JOptionPane.INFORMATION_MESSAGE);
-//            btnSave.setEnabled(false);
+            JOptionPane.showMessageDialog(this,"Successfully admitted","Patient",JOptionPane.INFORMATION_MESSAGE);
+            btnSave.setEnabled(false);
 
-        }catch(Exception e){
+        }catch(Exception e)
+        {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(this,e);
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        try{
+        try
+        {
             int P = JOptionPane.showConfirmDialog(null," Are you sure want to delete ?","Confirmation",JOptionPane.YES_NO_OPTION);
             if (P==0)
             {
                 con=Connect.ConnectDB();
-                String sql= "delete from hms where patient_id = " + txtPID.getText() + "";
+                String sql= "delete from patient where patient_id = " + txtPID.getText() + "";
                 pst=con.prepareStatement(sql);
                 pst.execute();
                 JOptionPane.showMessageDialog(this,"Successfully deleted","Record",JOptionPane.INFORMATION_MESSAGE);
@@ -371,23 +375,10 @@ private void Reset()
 //                }
 //            }
 
-            String sql= " update hms set  patient_id='"+ txtPID.getText() + "',disease='"+ txtPDisease.getText() + "',admit_date='"+ txtPAD.getText() +   "' where patient_id= " + txtPID.getText() + "";
+            String sql= " update Patient set  patient_id='"+ txtPID.getText() + "',disease='"+ txtPDisease.getText() + "',admit_date='"+ txtPAD.getText() +   "' where patient_id= " + txtPID.getText() + "";
             pst=con.prepareStatement(sql);
             pst.execute();
 
-//            if (!t.equals(s))
-//            {
-//                String sql3= "update room set RoomStatus='Booked' where RoomNo='" + cmbRoomNo.getSelectedItem() + "'";
-//                pst=con.prepareStatement(sql3);
-//                pst.execute();
-//            }
-//
-//            if (!t.equals(s))
-//            {
-//                String sql4= "update room set RoomStatus='Vacant' where RoomNo='" + cmbRoomNo1.getSelectedItem() + "'";
-//                pst=con.prepareStatement(sql4);
-//                pst.execute();
-//            }
             JOptionPane.showMessageDialog(this,"Successfully updated","Patient Record",JOptionPane.INFORMATION_MESSAGE);
             btnUpdate.setEnabled(false);
 
@@ -447,6 +438,7 @@ private void Reset()
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -457,6 +449,7 @@ private void Reset()
     private javax.swing.JTextField txtPGender;
     private javax.swing.JTextField txtPID;
     private javax.swing.JTextField txtPName;
+    private javax.swing.JPasswordField txtPP;
     public javax.swing.JTextArea txtRemarks;
     // End of variables declaration//GEN-END:variables
 }

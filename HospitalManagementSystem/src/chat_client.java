@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hospitalmanagementsystem;
 
-import static hospitalmanagementsystem.chat_server.dout;
-import static hospitalmanagementsystem.chat_server.ss;
+
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
@@ -16,7 +15,8 @@ import java.net.Socket;
  *
  * @author mukul
  */
-public class chat_client extends javax.swing.JFrame implements Runnable {
+public class chat_client extends javax.swing.JFrame implements Runnable
+{
     static Socket s;
     static DataInputStream dis;
     static DataOutputStream dout;

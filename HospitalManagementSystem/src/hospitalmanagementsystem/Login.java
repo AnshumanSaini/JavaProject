@@ -4,9 +4,16 @@
  * and open the template in the editor.
  */
 package hospitalmanagementsystem;
+import javax.swing.*;
+import java.io.*;
+import java.sql.*;
+import hospitalmanagementsystem.*;
 
 public class Login extends javax.swing.JFrame 
 {
+    Connection con=null;
+    ResultSet rs=null;
+    PreparedStatement pst=null;
     public Login()
     {
         initComponents();
@@ -19,8 +26,8 @@ public class Login extends javax.swing.JFrame
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtPID = new javax.swing.JTextField();
+        txtPP = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -35,9 +42,9 @@ public class Login extends javax.swing.JFrame
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Password");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtPID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtPIDActionPerformed(evt);
             }
         });
 
@@ -69,8 +76,8 @@ public class Login extends javax.swing.JFrame
                         .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1)
-                            .addComponent(jTextField1)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)))
+                            .addComponent(txtPID)
+                            .addComponent(txtPP, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(122, 122, 122)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -86,11 +93,11 @@ public class Login extends javax.swing.JFrame
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPP, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
@@ -101,9 +108,9 @@ public class Login extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtPIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPIDActionPerformed
 
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtPIDActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         CreateID frame2=new CreateID();
@@ -113,9 +120,41 @@ public class Login extends javax.swing.JFrame
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        chat_server cs=new chat_server();
-        chat_client cc=new chat_client();
+        String str=txtPID.getText();
+        if (str.equals("")) 
+        {
+           JOptionPane.showMessageDialog( this, "Please enter user name","Error", JOptionPane.ERROR_MESSAGE);
+           return;
+            
+            }
+    String Password= String.valueOf(txtPP.getPassword());
+        if (Password.equals("")) {
+           JOptionPane.showMessageDialog( this, "Please enter password","Error", JOptionPane.ERROR_MESSAGE);
+           return;
+          
+            }
+      con=Connect.ConnectDB();
+      String pass=new String(txtPP.getPassword());
+      String sql= "select * from patient where patient_id= '" + txtPID.getText() + "' and password ='" + pass + "'";
+      try
+      {
+          pst=con.prepareStatement(sql);
+          rs= pst.executeQuery();
+          if (rs.next())
+          {
+              String chkID=rs.getString("patient_id");
+              String chkPass=rs.getString("password");
+              if(!pass.equals(chkPass)) JOptionPane.showMessageDialog(null, "Login Failed..Try again !","Access denied",JOptionPane.ERROR_MESSAGE);
+              else System.out.println("AAGAYE!!!!!!!!!!!");
+          }
+          else{
+              
+            JOptionPane.showMessageDialog(null, "Login Failed..Try again !","Access denied",JOptionPane.ERROR_MESSAGE);
+          }
+      }catch(Exception e){
+         JOptionPane.showMessageDialog(null, e); 
+          
+    }                             
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -163,7 +202,7 @@ public class Login extends javax.swing.JFrame
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtPID;
+    private javax.swing.JPasswordField txtPP;
     // End of variables declaration//GEN-END:variables
 }
