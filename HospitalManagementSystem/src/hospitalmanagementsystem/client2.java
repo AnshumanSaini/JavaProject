@@ -1,3 +1,5 @@
+package hospitalmanagementsystem;
+
 
 
 /*
@@ -28,9 +30,11 @@ public class client2{
         ObjectInputStream objis = new ObjectInputStream(is);
         
         String str = (String)objis.readObject();
-        if(str.equals("on"))
+        if(!str.equals(""))
         {
-            
+            Login1 l1=new Login1(str);
+            Thread t=new Thread(l1);
+            t.start();
         }
         s.close();
         

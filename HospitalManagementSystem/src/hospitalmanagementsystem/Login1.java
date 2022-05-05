@@ -12,13 +12,15 @@ import java.sql.*;
 import hospitalmanagementsystem.*;
 import java.net.Socket;
 
-public class Login1 extends javax.swing.JFrame 
+public class Login1 extends javax.swing.JFrame implements Runnable
 {
     Connection con=null;
     ResultSet rs=null;
     PreparedStatement pst=null;
-    public Login1()
+    String str="";
+    public Login1(String str)
     {
+        this.str=str;
         initComponents();
     }
     
@@ -165,57 +167,7 @@ public class Login1 extends javax.swing.JFrame
      */
     public static void main(String args[]) 
     {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        try{
-        Socket s = new Socket("localhost",8080);
-        
-        InputStream is = s.getInputStream();
-        ObjectInputStream objis = new ObjectInputStream(is);
-        String str = (String)objis.readObject();
-        if(str.equals("on"))
-        {
-            java.awt.EventQueue.invokeLater(new Runnable(){
-            public void run() 
-            {
-                new Login().setVisible(true);
-            }
-        });
-        }
-        s.close();
-        
-        is.close();
-        objis.close();
-        }catch (Exception e)
-        {
-            System.out.println("here");
-            System.out.println(e);
-        }
+ 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -227,4 +179,25 @@ public class Login1 extends javax.swing.JFrame
     private javax.swing.JTextField txtPID;
     private javax.swing.JPasswordField txtPP;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run()
+    {
+        try{
+            java.awt.EventQueue.invokeLater(new Runnable(){
+            public void run() 
+            {
+                setVisible(true);
+//                while(true)
+//                {
+//                    System.out.println(str);
+//                }
+            }
+        });
+        }catch (Exception e)
+        {
+            System.out.println("here");
+            System.out.println(e);
+        }
+    }
 }

@@ -16,7 +16,7 @@ public class HospitalManagementSystem {
      */
     public static void main(String[] args) 
     {
-        Login log=new Login();
+        Login1 log=new Login1(null);
         log.setVisible(true);
         
     }

@@ -20,16 +20,16 @@ import java.io.*;
 
 public class server2 extends Thread implements Runnable { 
     Socket s;
+    static String str1="";
     public server2(Socket s){
         this.s = s;
     }
     
     synchronized public void startLogin(){
-        String str="on";
         try{
             OutputStream obj = s.getOutputStream();
             ObjectOutputStream obj1 = new ObjectOutputStream(obj);
-            obj1.writeObject(str);
+            obj1.writeObject(str1);
         }
         catch (Exception e){
             
@@ -52,7 +52,9 @@ public class server2 extends Thread implements Runnable {
             {
                 Socket s = ss.accept();
                 server = new server2(s);
-                System.out.println("CLient "+i +" is connected");
+                System.out.println("Client "+i +" is connected");
+                str1="Client ";
+                str1+=Integer.toString(i);
                 i++;
                 new Thread(server).start();
             }
