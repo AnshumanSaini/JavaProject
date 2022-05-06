@@ -10,17 +10,23 @@ import javax.swing.*;
 import java.io.*;
 import java.sql.*;
 import hospitalmanagementsystem.*;
+
 import java.net.Socket;
+import java.util.StringTokenizer;
 
 public class Login1 extends javax.swing.JFrame implements Runnable
 {
-    Connection con=null;
-    ResultSet rs=null;
-    PreparedStatement pst=null;
-    String str="";
-    public Login1(String str)
+//    Connection con=null;
+//    ResultSet rs=null;
+//    PreparedStatement pst=null;
+    static DataInputStream in;
+    static DataOutputStream out;
+    Socket s;
+    public Login1(Socket s) throws IOException
     {
-        this.str=str;
+        this.s=s;
+        in = new DataInputStream(s.getInputStream());
+        out = new DataOutputStream(s.getOutputStream());
         initComponents();
     }
     
@@ -118,48 +124,74 @@ public class Login1 extends javax.swing.JFrame implements Runnable
     }//GEN-LAST:event_txtPIDActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        CreateID frame2=new CreateID();
-        this.setVisible(false);
-        frame2.setVisible(true);
+     try
+     {
+        CreateID frame2=new CreateID(s);
+        Thread t=new Thread(frame2);
+        t.start();
         this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+        setVisible(false);
+        return;
+     }
+     catch(Exception e)
+     {
+        e.printStackTrace(); 
+     }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try
+        {
         String str=txtPID.getText();
+        // no Entry on the Filed
         if (str.equals("")) 
         {
            JOptionPane.showMessageDialog( this, "Please enter user name","Error", JOptionPane.ERROR_MESSAGE);
            return;
-            
-            }
-    String Password= String.valueOf(txtPP.getPassword());
-        if (Password.equals("")) {
+        }
+        String Password= String.valueOf(txtPP.getPassword());
+        if (Password.equals(""))
+        {
            JOptionPane.showMessageDialog( this, "Please enter password","Error", JOptionPane.ERROR_MESSAGE);
            return;
-          
-            }
-      con=Connect.ConnectDB();
-      String pass=new String(txtPP.getPassword());
-      String sql= "select * from patient where patient_id= '" + txtPID.getText() + "' and password ='" + pass + "'";
-      try
-      {
-          pst=con.prepareStatement(sql);
-          rs= pst.executeQuery();
-          if (rs.next())
+        }
+        
+        
+        String pass=new String(txtPP.getPassword());
+        
+        String sql= "select * from patient where patient_id= '" + txtPID.getText() + "' and password ='" + pass + "'";
+        String str1="null#"+sql+"#login";
+        out.writeUTF(str1);
+
+        // Waiting for Servers response
+        System.out.println("send hoo gayi Query!!!!!!!!!");
+          String response="";
+          while(true)
           {
-              String chkID=rs.getString("patient_id");
-              String chkPass=rs.getString("password");
-              if(!pass.equals(chkPass)) JOptionPane.showMessageDialog(null, "Login Failed..Try again !","Access denied",JOptionPane.ERROR_MESSAGE);
-              else System.out.println("Logined!!!!!!!!!!!!!!!");
-          }
-          else{
+              response=(String)in.readUTF();
+              StringTokenizer st = new StringTokenizer(response,"#");
+              String res = st.nextToken();
+	      String operation = st.nextToken();
+              if(res=="yes")
+              {
+                  System.out.println("Logined!!!!!!!!!!!!!!!");
+                  setVisible(false);
+                  break;
+              }
+              else
+              {
+                  JOptionPane.showMessageDialog(null, "Login Failed..Try again !","Access denied",JOptionPane.ERROR_MESSAGE);
+                  setVisible(false);
+                  break;
+              }
               
-            JOptionPane.showMessageDialog(null, "Login Failed..Try again !","Access denied",JOptionPane.ERROR_MESSAGE);
           }
-      }catch(Exception e){
-         JOptionPane.showMessageDialog(null, e); 
-          
-    }                             
+      }
+      catch(Exception e)
+      {
+          e.printStackTrace();
+      }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -184,16 +216,12 @@ public class Login1 extends javax.swing.JFrame implements Runnable
     public void run()
     {
         try{
-            java.awt.EventQueue.invokeLater(new Runnable(){
-            public void run() 
-            {
                 setVisible(true);
 //                while(true)
 //                {
 //                    System.out.println(str);
 //                }
-            }
-        });
+        
         }catch (Exception e)
         {
             System.out.println("here");

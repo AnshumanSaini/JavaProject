@@ -4,8 +4,15 @@
  * and open the template in the editor.
  */
 package hospitalmanagementsystem;
+
 import hospitalmanagementsystem.*;
+import static hospitalmanagementsystem.Login1.in;
+import static hospitalmanagementsystem.Login1.out;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
 import java.sql.*;
+import java.util.StringTokenizer;
 import javax.swing.*;
 
 /**
@@ -14,10 +21,8 @@ import javax.swing.*;
  */
 public class CreateID extends javax.swing.JFrame implements Runnable
 {
-
-    /**
-     * Creates new form CreateID
-     */
+        static DataInputStream in;
+        static DataOutputStream out;
         Connection con=null;
         ResultSet rs=null;
         PreparedStatement pst=null;
@@ -32,13 +37,13 @@ private void Reset()
     txtPBG.setText("");
     txtPAD.setText("");
     btnSave.setEnabled(true);
-    btnUpdate.setEnabled(false);
-    btnDelete.setEnabled(false);
     txtPP.setText("");
     txtRemarks.setText("");
 }
-    public CreateID() 
+    public CreateID(Socket s) throws Exception
     {
+        in = new DataInputStream(s.getInputStream());
+        out = new DataOutputStream(s.getOutputStream());
         initComponents();
     }
 
@@ -54,8 +59,8 @@ private void Reset()
         jPanel2 = new javax.swing.JPanel();
         btnNew = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
-        btnUpdate = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -94,19 +99,17 @@ private void Reset()
             }
         });
 
-        btnDelete.setText("Delete");
-        btnDelete.setEnabled(false);
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Delete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        btnUpdate.setText("Update");
-        btnUpdate.setEnabled(false);
-        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setText("Update");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -116,11 +119,12 @@ private void Reset()
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnNew, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                        .addComponent(btnNew, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -131,9 +135,9 @@ private void Reset()
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSave)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDelete)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnUpdate)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -277,13 +281,14 @@ private void Reset()
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try{
-            con=Connect.ConnectDB();
+
             if (txtPID.getText().equals("")) 
             {
                 JOptionPane.showMessageDialog( this, "Please retrieve Patient ID","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (txtPName.getText().equals("")) {
+            if (txtPName.getText().equals("")) 
+            {
                 JOptionPane.showMessageDialog( this, "Please retrieve Patient Name","Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -309,25 +314,35 @@ private void Reset()
                 return;
             }
 
-            Statement stmt;
-            stmt= con.createStatement();
-            String sql1="Select patient_id,admit_date from patient where patient_id= '" + txtPID.getText() + "' and admit_date='" + txtPAD.getText() + "'";
-            rs=stmt.executeQuery(sql1);
-            if(rs.next()){
-                JOptionPane.showMessageDialog( this, "Record already exists","Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            String pass=new String(txtPP.getPassword());
+
+            String checkQuery="Select patient_id,admit_date from patient where patient_id= '" + txtPID.getText() + "' and admit_date='" + txtPAD.getText() + "'";
+
             
+            String pass=new String(txtPP.getPassword());
             String sql= "insert into patient(patient_id,patient_name,gender,bloodGroup,disease,admit_date,password)values('"+ txtPID.getText() +"','"+ txtPName.getText()+ "','"+txtPGender.getText()+"','" +txtPBG.getText()+ "','" + txtPDisease.getText() + "','"+ txtPAD.getText() +"','"+pass +"')";
 
-            pst=con.prepareStatement(sql);
-            pst.execute();
-//            String sql3= "update room set RoomStatus='Booked' where RoomNo='" + cmbRoomNo.getSelectedItem() + "'";
-//            pst=con.prepareStatement(sql3);
-//            pst.execute();
-            JOptionPane.showMessageDialog(this,"Successfully admitted","Patient",JOptionPane.INFORMATION_MESSAGE);
-            btnSave.setEnabled(false);
+            String str=checkQuery+"#"+sql+"#insert";
+            out.writeUTF(str);
+            
+            while(true)
+            {
+                String response=(String)in.readUTF();
+                StringTokenizer st = new StringTokenizer(response,"#");
+		String res = st.nextToken();
+	        String operation = st.nextToken();
+                System.out.println("CreateId received the response!!!!!!");
+                System.out.println(res+"**********"+operation);
+                if(res=="yes")
+                {
+                    JOptionPane.showMessageDialog(this,"Successfully admitted","Patient",JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog( this, "Record already exists","Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+            }
 
         }catch(Exception e)
         {
@@ -336,8 +351,12 @@ private void Reset()
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        try
+    private void txtPBGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPBGActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPBGActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       try
         {
             int P = JOptionPane.showConfirmDialog(null," Are you sure want to delete ?","Confirmation",JOptionPane.YES_NO_OPTION);
             if (P==0)
@@ -353,10 +372,10 @@ private void Reset()
         }catch(Exception e){
             JOptionPane.showMessageDialog(this,e);
         }
-    }//GEN-LAST:event_btnDeleteActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        try{
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       try{
 
             con=Connect.ConnectDB();
 
@@ -381,16 +400,12 @@ private void Reset()
             pst.execute();
 
             JOptionPane.showMessageDialog(this,"Successfully updated","Patient Record",JOptionPane.INFORMATION_MESSAGE);
-            btnUpdate.setEnabled(false);
+            
 
         }catch(Exception ex){
             JOptionPane.showMessageDialog(this,ex);
         }
-    }//GEN-LAST:event_btnUpdateActionPerformed
-
-    private void txtPBGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPBGActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPBGActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -400,10 +415,10 @@ private void Reset()
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnDelete;
     private javax.swing.JButton btnNew;
     public javax.swing.JButton btnSave;
-    public javax.swing.JButton btnUpdate;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

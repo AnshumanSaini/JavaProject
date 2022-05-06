@@ -17,48 +17,31 @@ package hospitalmanagementsystem;
 //}
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class server2 extends Thread implements Runnable { 
-    Socket s;
-    static String str1="";
-    public server2(Socket s){
-        this.s = s;
-    }
-    
-    synchronized public void startLogin(){
-        try{
-            OutputStream obj = s.getOutputStream();
-            ObjectOutputStream obj1 = new ObjectOutputStream(obj);
-            obj1.writeObject(str1);
-        }
-        catch (Exception e){
-            
-        }
-    }
-    
-    public void run()
-    {
-        startLogin();
-    }
+public class server2{ 
+    private static ArrayList<serviceHandler> activeClient=new ArrayList<>();
+    private static ExecutorService pool=Executors.newFixedThreadPool(10);
 
     public static void main(String [] args) throws Exception
     {
+            
         try{
-            ServerSocket ss = new ServerSocket(8080);
+            ServerSocket ss = new ServerSocket(8081);
             System.out.println("Server is running ");
             int i = 1;
-            server2 server; 
             while(true)
             {
                 Socket s = ss.accept();
-                server = new server2(s);
+                serviceHandler ch=new serviceHandler(s);
+                activeClient.add(ch);
+                pool.execute(ch);
                 System.out.println("Client "+i +" is connected");
-                str1="Client ";
-                str1+=Integer.toString(i);
-                i++;
-                new Thread(server).start();
             }
-        }catch(Exception e){
+        }
+        catch(Exception e){
             
         }
     }

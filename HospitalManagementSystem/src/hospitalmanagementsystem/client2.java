@@ -18,36 +18,24 @@ package hospitalmanagementsystem;
 
 import java.net.*;
 import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class client2{
-
+public class client2
+{
+    private static ExecutorService pool=Executors.newFixedThreadPool(10);
     public static void main(String [] args) throws Exception
     {
-        try{
-        Socket s = new Socket("localhost",8080);
-        
-        InputStream is = s.getInputStream();
-        ObjectInputStream objis = new ObjectInputStream(is);
-        
-        String str = (String)objis.readObject();
-        if(!str.equals(""))
+        Socket s = new Socket("localhost",8081);
+        try
         {
-            Login1 l1=new Login1(str);
-            Thread t=new Thread(l1);
-            t.start();
+            Login1 l1=new Login1(s);
+            pool.execute(l1);
         }
-        s.close();
-        
-        is.close();
-        objis.close();
-        }catch (Exception e)
+        catch (Exception e)
         {
             System.out.println("here");
             System.out.println(e);
         }
-        
-      
-        
-
     }
 }   
