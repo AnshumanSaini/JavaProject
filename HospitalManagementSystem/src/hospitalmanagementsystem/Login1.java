@@ -21,12 +21,10 @@ public class Login1 extends javax.swing.JFrame implements Runnable
 //    PreparedStatement pst=null;
     static DataInputStream in;
     static DataOutputStream out;
-    Socket s;
-    public Login1(Socket s) throws IOException
+    public Login1(DataInputStream in,DataOutputStream out) throws IOException
     {
-        this.s=s;
-        in = new DataInputStream(s.getInputStream());
-        out = new DataOutputStream(s.getOutputStream());
+        this.in =in;
+        this.out =out;
         initComponents();
     }
     
@@ -126,7 +124,7 @@ public class Login1 extends javax.swing.JFrame implements Runnable
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
      try
      {
-        CreateID frame2=new CreateID(s);
+        CreateID frame2=new CreateID(in,out);
         Thread t=new Thread(frame2);
         t.start();
         this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
@@ -160,8 +158,7 @@ public class Login1 extends javax.swing.JFrame implements Runnable
         String pass=new String(txtPP.getPassword());
         
         String sql= "select * from patient where patient_id= '" + txtPID.getText() + "' and password ='" + pass + "'";
-        String str1="null#"+sql+"#login";
-        out.writeUTF(str1);
+        out.writeUTF(sql+"#execute");
 
         // Waiting for Servers response
         System.out.println("send hoo gayi Query!!!!!!!!!");
@@ -169,10 +166,9 @@ public class Login1 extends javax.swing.JFrame implements Runnable
           while(true)
           {
               response=(String)in.readUTF();
-              StringTokenizer st = new StringTokenizer(response,"#");
-              String res = st.nextToken();
-	      String operation = st.nextToken();
-              if(res=="yes")
+
+              System.out.println("response is: "+response);
+              if(!response.equals(""))
               {
                   System.out.println("Logined!!!!!!!!!!!!!!!");
                   setVisible(false);
@@ -184,7 +180,6 @@ public class Login1 extends javax.swing.JFrame implements Runnable
                   setVisible(false);
                   break;
               }
-              
           }
       }
       catch(Exception e)

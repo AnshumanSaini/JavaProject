@@ -5,6 +5,8 @@
  */
 package hospitalmanagementsystem;
 
+import java.io.IOException;
+
 /**
  *
  * @author saini
@@ -14,9 +16,9 @@ public class HospitalManagementSystem {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) 
+    public static void main(String[] args) throws IOException 
     {
-        Login1 log=new Login1(null);
+        Login1 log=new Login1(null,null);
         log.setVisible(true);
         
     }

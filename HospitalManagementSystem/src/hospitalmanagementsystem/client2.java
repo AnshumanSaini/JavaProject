@@ -23,13 +23,17 @@ import java.util.concurrent.Executors;
 
 public class client2
 {
+    static DataInputStream in;
+    static DataOutputStream out;
     private static ExecutorService pool=Executors.newFixedThreadPool(10);
     public static void main(String [] args) throws Exception
     {
         Socket s = new Socket("localhost",8081);
+        in = new DataInputStream(s.getInputStream());
+        out = new DataOutputStream(s.getOutputStream());
         try
         {
-            Login1 l1=new Login1(s);
+            Login1 l1=new Login1(in,out);
             pool.execute(l1);
         }
         catch (Exception e)

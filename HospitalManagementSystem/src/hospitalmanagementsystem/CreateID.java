@@ -6,12 +6,9 @@
 package hospitalmanagementsystem;
 
 import hospitalmanagementsystem.*;
-import static hospitalmanagementsystem.Login1.in;
-import static hospitalmanagementsystem.Login1.out;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
-import java.sql.*;
 import java.util.StringTokenizer;
 import javax.swing.*;
 
@@ -23,9 +20,6 @@ public class CreateID extends javax.swing.JFrame implements Runnable
 {
         static DataInputStream in;
         static DataOutputStream out;
-        Connection con=null;
-        ResultSet rs=null;
-        PreparedStatement pst=null;
 private void Reset()
 {
     txtPID.setText("");
@@ -40,10 +34,10 @@ private void Reset()
     txtPP.setText("");
     txtRemarks.setText("");
 }
-    public CreateID(Socket s) throws Exception
+    public CreateID(DataInputStream in,DataOutputStream out) throws Exception
     {
-        in = new DataInputStream(s.getInputStream());
-        out = new DataOutputStream(s.getOutputStream());
+        this.in=in;
+        this.out=out;
         initComponents();
     }
 
@@ -315,31 +309,30 @@ private void Reset()
             }
 
 
-            String checkQuery="Select patient_id,admit_date from patient where patient_id= '" + txtPID.getText() + "' and admit_date='" + txtPAD.getText() + "'";
+            String checkQuery="Select patient_id from patient where patient_id= '" + txtPID.getText() +"'";
 
             
             String pass=new String(txtPP.getPassword());
             String sql= "insert into patient(patient_id,patient_name,gender,bloodGroup,disease,admit_date,password)values('"+ txtPID.getText() +"','"+ txtPName.getText()+ "','"+txtPGender.getText()+"','" +txtPBG.getText()+ "','" + txtPDisease.getText() + "','"+ txtPAD.getText() +"','"+pass +"')";
-
-            String str=checkQuery+"#"+sql+"#insert";
-            out.writeUTF(str);
+            
+            out.writeUTF(checkQuery+"#execute");
             
             while(true)
             {
-                String response=(String)in.readUTF();
-                StringTokenizer st = new StringTokenizer(response,"#");
-		String res = st.nextToken();
-	        String operation = st.nextToken();
-                System.out.println("CreateId received the response!!!!!!");
-                System.out.println(res+"**********"+operation);
-                if(res=="yes")
-                {
-                    JOptionPane.showMessageDialog(this,"Successfully admitted","Patient",JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                }
-                else
+                String response=in.readUTF();
+//                StringTokenizer st = new StringTokenizer(response,"#");
+//		String res = st.nextToken();
+//	        String operation = st.nextToken();
+                System.out.println("CreateId received the response!!!!!!: "+response);
+                if(!response.equals(""))
                 {
                     JOptionPane.showMessageDialog( this, "Record already exists","Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+                else 
+                {
+                    out.writeUTF(sql+"#update");
+                    JOptionPane.showMessageDialog(this,"Successfully admitted","Patient",JOptionPane.INFORMATION_MESSAGE);
                     break;
                 }
             }
@@ -356,55 +349,55 @@ private void Reset()
     }//GEN-LAST:event_txtPBGActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       try
-        {
-            int P = JOptionPane.showConfirmDialog(null," Are you sure want to delete ?","Confirmation",JOptionPane.YES_NO_OPTION);
-            if (P==0)
-            {
-                con=Connect.ConnectDB();
-                String sql= "delete from patient where patient_id = " + txtPID.getText() + "";
-                pst=con.prepareStatement(sql);
-                pst.execute();
-                JOptionPane.showMessageDialog(this,"Successfully deleted","Record",JOptionPane.INFORMATION_MESSAGE);
-
-                Reset();
-            }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(this,e);
-        }
+//       try
+//        {
+//            int P = JOptionPane.showConfirmDialog(null," Are you sure want to delete ?","Confirmation",JOptionPane.YES_NO_OPTION);
+//            if (P==0)
+//            {
+//                con=Connect.ConnectDB();
+//                String sql= "delete from patient where patient_id = " + txtPID.getText() + "";
+//                pst=con.prepareStatement(sql);
+//                pst.execute();
+//                JOptionPane.showMessageDialog(this,"Successfully deleted","Record",JOptionPane.INFORMATION_MESSAGE);
+//
+//                Reset();
+//            }
+//        }catch(Exception e){
+//            JOptionPane.showMessageDialog(this,e);
+//        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       try{
-
-            con=Connect.ConnectDB();
-
-            Statement stmt1;
-            stmt1= con.createStatement();
-//            String s= cmbRoomNo.getSelectedItem().toString();
-//            String t= cmbRoomNo1.getSelectedItem().toString();
-//            if (!t.equals(s))
-//            {
-//                String sql2="Select RoomNo from Room where RoomNo= '" + cmbRoomNo.getSelectedItem()+ "' and RoomStatus='Booked'";
-//                rs=stmt1.executeQuery(sql2);
-//                if(rs.next()){
-//                    JOptionPane.showMessageDialog( this, "Room is already booked","Error", JOptionPane.ERROR_MESSAGE);
-//                    cmbRoomNo.setSelectedItem("");
-//                    cmbRoomNo.requestDefaultFocus();
-//                    return;
-//                }
-//            }
-
-            String sql= " update Patient set  patient_id='"+ txtPID.getText() + "',disease='"+ txtPDisease.getText() + "',admit_date='"+ txtPAD.getText() +   "' where patient_id= " + txtPID.getText() + "";
-            pst=con.prepareStatement(sql);
-            pst.execute();
-
-            JOptionPane.showMessageDialog(this,"Successfully updated","Patient Record",JOptionPane.INFORMATION_MESSAGE);
-            
-
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(this,ex);
-        }
+//       try{
+//
+//            con=Connect.ConnectDB();
+//
+//            Statement stmt1;
+//            stmt1= con.createStatement();
+////            String s= cmbRoomNo.getSelectedItem().toString();
+////            String t= cmbRoomNo1.getSelectedItem().toString();
+////            if (!t.equals(s))
+////            {
+////                String sql2="Select RoomNo from Room where RoomNo= '" + cmbRoomNo.getSelectedItem()+ "' and RoomStatus='Booked'";
+////                rs=stmt1.executeQuery(sql2);
+////                if(rs.next()){
+////                    JOptionPane.showMessageDialog( this, "Room is already booked","Error", JOptionPane.ERROR_MESSAGE);
+////                    cmbRoomNo.setSelectedItem("");
+////                    cmbRoomNo.requestDefaultFocus();
+////                    return;
+////                }
+////            }
+//
+//            String sql= " update Patient set  patient_id='"+ txtPID.getText() + "',disease='"+ txtPDisease.getText() + "',admit_date='"+ txtPAD.getText() +   "' where patient_id= " + txtPID.getText() + "";
+//            pst=con.prepareStatement(sql);
+//            pst.execute();
+//
+//            JOptionPane.showMessageDialog(this,"Successfully updated","Patient Record",JOptionPane.INFORMATION_MESSAGE);
+//            
+//
+//        }catch(Exception ex){
+//            JOptionPane.showMessageDialog(this,ex);
+//        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

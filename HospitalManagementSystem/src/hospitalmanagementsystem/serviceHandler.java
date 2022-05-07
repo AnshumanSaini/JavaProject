@@ -4,6 +4,7 @@
  */
 package hospitalmanagementsystem;
 
+
 import java.sql.*;
 import java.io.BufferedReader;
 import java.io.*;
@@ -18,7 +19,7 @@ public class serviceHandler implements Runnable
 {
     Connection con=null;
     ResultSet rs=null;
-    PreparedStatement pst=null;
+    Statement st=null;
     private Socket Client ;
     static DataInputStream in;
     static DataOutputStream out;
@@ -41,65 +42,35 @@ public class serviceHandler implements Runnable
             {
                 String sql = (String)in.readUTF();
                 
-                StringTokenizer st = new StringTokenizer(sql,"#");
+                StringTokenizer sto = new StringTokenizer(sql,"#");
                 
-                String checkQuery=st.nextToken();
-		String query = st.nextToken();
-	        String operation = st.nextToken();
+		String query = sto.nextToken();
+	        String operation = sto.nextToken();
                 
                 
-                System.out.println(checkQuery+"......"+query+"........"+operation);
-                
-                if(!checkQuery.equals("null"))
+//                System.out.println(checkQuery+"......"+query+"........"+operation);
+                System.out.println("Received the Query");
+                st=con.createStatement();
+                if(operation.equals("execute"))
                 {
-                   System.out.println("checkquery mai kuch too hai!!!!!!!!");
-                   pst=con.prepareStatement(checkQuery);
-                   rs= pst.executeQuery();
-                }
-                System.out.println("checkquery too chal gayi...");
-                
-                if(operation.equals("login"))
-                {
-                    //   response#operation
-                    System.out.println("aagiya login ke pass!!!!!");
-                    pst=con.prepareStatement(query);
-                    rs= pst.executeQuery();
+                    System.out.println("execute ch aa giya!!!!!!!!");
+                    rs=st.executeQuery(query);
+                    String responseSend="";
+                    System.out.println("query execute ho gayi!!!!!!");
                     if(rs.next())
                     {
-                        String str="yes#";
-                        str+=operation;
-                        out.writeUTF(str);
+                        responseSend="yes";
+                        System.out.println("sended the response!!!!!!!");
+                        out.writeUTF(responseSend);
                     }
-                    else
-                    {
-                        String str="no#";
-                        str+=operation;
-                        out.writeUTF(str);
-                    }
+                    else out.writeUTF(responseSend);
                 }
-                if(operation.equalsIgnoreCase("insert"))
+                if(operation.equals("update"))
                 {
-                    if(rs.next())
-                    {
-                        out.writeUTF("no#"+operation);
-                    }
-                    else
-                    {
-                        pst=con.prepareStatement(query);
-                        rs= pst.executeQuery();
-                        String str="yes#";
-                        str+=operation;
-                        out.writeUTF(str);
-                    }
+                    System.out.println("execute update ch aa giya!!!!!!!!");
+                    st.executeUpdate(query);
                 }
-                if(operation=="delete")
-                {
-                    
-                }
-                if(operation=="update")
-                {
-                    
-                }
+                
             }
         }
         catch(Exception e)
